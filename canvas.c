@@ -24,9 +24,9 @@ void canvas_write_ppm(int width, int height, tuple_t* pixels, FILE* fp) {
 
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-            int x = (int)pixels[i * height + j].x * 255;
-            int y = (int)pixels[i * height + j].y * 255;
-            int z = (int)pixels[i * height + j].z * 255;
+            int x = (int)(pixels[i * height + j].x * 255);
+            int y = (int)(pixels[i * height + j].y * 255);
+            int z = (int)(pixels[i * height + j].z * 255);
             x = x < 999 && x >= 0 ? x : 0;
             y = y < 999 && y >= 0 ? y : 0;
             z = z < 999 && z >= 0 ? z : 0;
