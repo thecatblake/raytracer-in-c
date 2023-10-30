@@ -8,10 +8,11 @@
 #include "ray.h"
 #include "sphere.h"
 #include "canvas.h"
+#include "light.h"
 
 int main() {
-    int width = 1800;
-    int height = 1800;
+    int width = 1000;
+    int height = 1000;
     int n_pixels = width * height;
 
     tuple_t* pixels = malloc(sizeof(tuple_t) * n_pixels);
@@ -20,7 +21,13 @@ int main() {
     object_init(&sphere);
 
     object_scale(&sphere, vector(200, 200, 200));
-    object_translate(&sphere, vector(500, 500, 0));
+
+    material_t material;
+    material_init(&material);
+    material.color = vector(1, 0.2, 1);
+    sphere.material = material;
+
+    point_light_t light = {point(-400, 400, -400), vector(1, 1, 1)};
 
     tuple_t origin = point(0, 0, -4000);
 
@@ -34,21 +41,28 @@ int main() {
         int x = (int)left_top.x + i % width;
         //printf("x: %d, y: %d\n", x, y);
 
-        ray_t ray;
-        ray.origin = origin;
-        ray.direction = tuple_norm(vector(x - ray.origin.x, y - ray.origin.y, -ray.origin.z));
+        ray_t ray_original, ray_inv;
+
+        ray_original.origin = origin;
+        ray_original.direction = tuple_norm(vector(x - ray_original.origin.x, y - ray_original.origin.y, -ray_original.origin.z));
+
         matrix_t origin_inv, direction_inv;
         matrix_inv(sphere.origin_transform, &origin_inv);
         matrix_inv(sphere.direction_transform, &direction_inv);
-        ray.origin = tuple_transform(origin_inv, ray.origin);
-        ray.direction = tuple_transform(direction_inv, ray.direction);
+        ray_inv.origin = tuple_transform(origin_inv, ray_original.origin);
+        ray_inv.direction = tuple_transform(direction_inv, ray_original.direction);
 
         double hits[2];
         int hit_num;
-        sphere_hit(&ray, hits, &hit_num);
+        sphere_hit(&ray_inv, hits, &hit_num);
 
         if (hit_num > 0) {
-            pixels[i] = point(1, 0, 0);
+            tuple_t position = ray_position(&ray_original, hits[0]);
+            tuple_t normalv = sphere_normal_at(&sphere, position);
+            tuple_t eyev = ray_original.direction;
+            tuple_t color = lighting(&sphere.material, &light, position, eyev, normalv);
+
+            pixels[i] = color;
         }
     }
 
