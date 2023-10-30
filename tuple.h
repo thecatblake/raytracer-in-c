@@ -6,6 +6,7 @@
 #define RAYTRACING_IN_C_TUPLE_H
 
 #include "util.h"
+#include <stdio.h>
 
 
 typedef struct tuple_s {
@@ -42,5 +43,7 @@ tuple_t tuple_cross(tuple_t t1, tuple_t t2);
 void tuple_cpy(tuple_t* destination, tuple_t* source);
 
 tuple_t tuple_reflect(tuple_t t, tuple_t n);
+
+void tuple_print(tuple_t t);
 
 #endif //RAYTRACING_IN_C_TUPLE_H

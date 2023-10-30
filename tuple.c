@@ -68,3 +68,7 @@ void tuple_cpy(tuple_t* destination, tuple_t* source) {
 tuple_t tuple_reflect(tuple_t t, tuple_t n) {
     return tuple_sub(t, tuple_sc_mul(tuple_sc_mul(n, 2.0), tuple_dot(t, n)));
 }
+
+void tuple_print(tuple_t t) {
+    printf("(%f, %f, %f)\n", t.x, t.y, t.z);
+}
