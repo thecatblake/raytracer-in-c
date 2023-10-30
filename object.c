@@ -5,8 +5,19 @@
 #include "object.h"
 
 void object_init(object_t* object) {
-    matrix_id(&object->transform);
+    matrix_id(&object->origin_transform);
+    matrix_id(&object->direction_transform);
 }
-void add_transform(object_t* object, matrix_t transform) {
-    matrix_mul(transform, object->transform, &object->transform);
+
+void object_translate(object_t* object, tuple_t translation) {
+    matrix_t t;
+    translation_matrix(translation.x, translation.y, translation.z, &t);
+    matrix_mul(t, object->origin_transform, &object->origin_transform);
+}
+
+void object_scale(object_t* object, tuple_t scale) {
+    matrix_t t;
+    scaling_matrix(scale.x, scale.y, scale.z, &t);
+    matrix_mul(t, object->origin_transform, &object->origin_transform);
+    matrix_mul(t, object->direction_transform, &object->direction_transform);
 }

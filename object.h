@@ -8,10 +8,14 @@
 #include "matrix.h"
 
 typedef struct object_s {
-    matrix_t transform;
+    matrix_t origin_transform;
+    matrix_t direction_transform;
 } object_t;
 
 void object_init(object_t* object);
 void add_transform(object_t* object, matrix_t transform);
+void object_translate(object_t* object, tuple_t translation);
+void object_scale(object_t* object, tuple_t scale);
+void object_rotate(object_t* object, tuple_t rotation);
 
 #endif //RAY_TRACER_IN_C_OBJECT_H
