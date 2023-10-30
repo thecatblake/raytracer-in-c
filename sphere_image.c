@@ -11,8 +11,8 @@
 #include "light.h"
 
 int main() {
-    int width = 1000;
-    int height = 1000;
+    int width = 1800;
+    int height = 1800;
     int n_pixels = width * height;
 
     tuple_t* pixels = malloc(sizeof(tuple_t) * n_pixels);
@@ -20,14 +20,15 @@ int main() {
     object_t sphere;
     object_init(&sphere);
 
-    object_scale(&sphere, vector(200, 200, 200));
+    object_scale(&sphere, vector(300, 300, 300));
+    object_translate(&sphere, vector(100, 100, 0));
 
     material_t material;
     material_init(&material);
     material.color = vector(1, 0.2, 1);
     sphere.material = material;
 
-    point_light_t light = {point(-400, 400, -400), vector(1, 1, 1)};
+    point_light_t light = {point(-1000, 1000, -1000), vector(0.8, 0.8, 0.8)};
 
     tuple_t origin = point(0, 0, -4000);
 
@@ -59,7 +60,7 @@ int main() {
         if (hit_num > 0) {
             tuple_t position = ray_position(&ray_original, hits[0]);
             tuple_t normalv = sphere_normal_at(&sphere, position);
-            tuple_t eyev = ray_original.direction;
+            tuple_t eyev = tuple_neg(ray_original.direction);
             tuple_t color = lighting(&sphere.material, &light, position, eyev, normalv);
 
             pixels[i] = color;
