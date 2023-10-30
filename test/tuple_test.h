@@ -136,7 +136,7 @@ TEST(test_tuple_multiplication) {
 
 TEST(test_tuple_reflection) {
     tuple_t v = vector(0, -1, 0);
-    tuple_t n = vector(sqrtf(2)/2, sqrtf(2)/2, 0);
+    tuple_t n = vector(sqrt(2)/2, sqrt(2)/2, 0);
     munit_assert(tuple_cmp2(vector(1, 0, 0), tuple_reflect(v, n)));
 
     return MUNIT_OK;

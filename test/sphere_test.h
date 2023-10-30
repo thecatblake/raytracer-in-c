@@ -23,6 +23,18 @@ TEST(test_sphere_hit) {
     return MUNIT_OK;
 }
 
+TEST(test_sphere_normal_at) {
+    object_t sphere;
+    object_init(&sphere);
+    object_translate(&sphere, vector(0, 1, 0));
+
+    tuple_t n = sphere_normal_at(&sphere, point(0, 1.70711, -0.70711));
+
+    munit_assert(tuple_cmp2(n, vector(0, 0.70711, -0.70711)));
+
+    return MUNIT_OK;
+}
+
 #define SPHERE_TESTS \
     {                \
         "sphere_hit", \
@@ -31,6 +43,15 @@ TEST(test_sphere_hit) {
         NULL,        \
         MUNIT_TEST_OPTION_NONE, \
         NULL\
+    },               \
+    {                \
+        "sphere_normal_at", \
+        test_sphere_normal_at, \
+        NULL,        \
+        NULL,        \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
     }
+
 
 #endif //RAYTRACING_IN_C_SPHERE_TEST_H

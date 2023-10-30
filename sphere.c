@@ -36,3 +36,12 @@ void sphere_hit(ray_t* ray, double* buf, int* hit_num) {
     buf[0] = (-b - tmp) / a;
     buf[1] = (-b + tmp) / a;
 }
+
+tuple_t sphere_normal_at(object_t* sphere, tuple_t point) {
+    matrix_t m;
+    tuple_t object_normal = tuple_transform(*matrix_inv(sphere->origin_transform, &m), point);
+
+    tuple_t world_normal = tuple_transform(*matrix_T(*matrix_inv(sphere->origin_transform, &m), &m), object_normal);
+    world_normal.w = 0;
+    return tuple_norm(world_normal);
+}
