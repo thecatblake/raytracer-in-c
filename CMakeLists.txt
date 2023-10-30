@@ -14,10 +14,12 @@ add_library(raytracer
         object.c
         sphere.c
         canvas.c
-        material.c)
+        material.c
+        light.c)
 
 add_executable(ray_tracer_in_C main.c)
-add_executable(test test/tests.c)
+add_executable(test test/tests.c
+        test/light_test.h)
 add_executable(sphere_image sphere_image.c)
 target_link_libraries(ray_tracer_in_C raytracer)
 target_link_libraries(test munit raytracer)
