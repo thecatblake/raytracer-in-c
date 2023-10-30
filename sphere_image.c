@@ -28,7 +28,7 @@ int main() {
     material.color = vector(1, 0.2, 1);
     sphere.material = material;
 
-    point_light_t light = {point(-1000, 1000, -1000), vector(0.8, 0.8, 0.8)};
+    point_light_t light = {point(-1000, 1000, -1000), vector(1, 1, 1)};
 
     tuple_t origin = point(0, 0, -4000);
 
