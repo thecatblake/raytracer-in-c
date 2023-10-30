@@ -6,10 +6,12 @@
 #define RAY_TRACER_IN_C_OBJECT_H
 
 #include "matrix.h"
+#include "material.h"
 
 typedef struct object_s {
     matrix_t origin_transform;
     matrix_t direction_transform;
+    material_t material;
 } object_t;
 
 void object_init(object_t* object);

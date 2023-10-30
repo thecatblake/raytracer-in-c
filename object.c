@@ -7,6 +7,7 @@
 void object_init(object_t* object) {
     matrix_id(&object->origin_transform);
     matrix_id(&object->direction_transform);
+    material_init(&object->material);
 }
 
 void object_translate(object_t* object, tuple_t translation) {
