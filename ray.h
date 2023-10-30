@@ -7,7 +7,7 @@
 
 #include "tuple.h"
 
-typedef struct {
+typedef struct ray_s {
     tuple_t origin;
     tuple_t direction;
 } ray_t;

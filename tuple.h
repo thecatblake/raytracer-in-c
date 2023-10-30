@@ -8,7 +8,7 @@
 #include "util.h"
 
 
-typedef struct {
+typedef struct tuple_s {
     double x;
     double y;
     double z;
