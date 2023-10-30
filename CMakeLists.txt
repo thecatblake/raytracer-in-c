@@ -10,5 +10,7 @@ add_library(raytracer util.c tuple.c matrix.c ray.c object.c sphere.c canvas.c)
 
 add_executable(ray_tracer_in_C main.c)
 add_executable(test test/tests.c)
+add_executable(sphere_image sphere_image.c)
 target_link_libraries(ray_tracer_in_C raytracer)
 target_link_libraries(test munit raytracer)
+target_link_libraries(sphere_image raytracer)
