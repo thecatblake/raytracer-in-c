@@ -68,6 +68,26 @@ Heap world_intersect(world_t* world, ray_t* ray) {
     return intersections;
 }
 
+int is_shadowed(world_t* world, tuple_t position) {
+    tuple_t v = tuple_sub(world->light->position, position);
+    double distance = tuple_mag(v);
+    tuple_t direction = tuple_norm(v);
+
+    ray_t ray = {position, direction};
+    Heap intersections = world_intersect(world, &ray);
+
+    if(intersections.size == 0)
+        return 0;
+
+    intersection_t* intersection;
+    heap_extract(&intersections, (void**)&intersection);
+
+    if (intersection->t > distance)
+        return 0;
+
+    return 1;
+}
+
 computation_t prepare_computation(intersection_t* intersection, ray_t* ray) {
     computation_t computation = {
             .t = intersection->t,
@@ -91,11 +111,14 @@ computation_t prepare_computation(intersection_t* intersection, ray_t* ray) {
     } else
         computation.inside = 0;
 
+    computation.over_position = tuple_add(computation.position, tuple_sc_mul(computation.normalv, EPSILON_DEFAULT));
+
     return computation;
 }
 
 tuple_t shade_hit(world_t* world, computation_t* computation) {
-    return lighting(&computation->object->material, world->light, computation->position, computation->eyev, computation->normalv);
+    int shadowed = is_shadowed(world, computation->over_position);
+    return lighting(&computation->object->material, world->light, computation->position, computation->eyev, computation->normalv, shadowed);
 }
 
 tuple_t color_at(world_t* world, ray_t* ray) {

@@ -4,7 +4,7 @@
 
 #include "light.h"
 
-tuple_t lighting(material_t* material, point_light_t* light, tuple_t position, tuple_t eyev, tuple_t normalv) {
+tuple_t lighting(material_t* material, point_light_t* light, tuple_t position, tuple_t eyev, tuple_t normalv, int in_shadow) {
     tuple_t e_c, lightv, reflectv;
 
     e_c = tuple_mul(material->color, light->intensity);
@@ -31,6 +31,9 @@ tuple_t lighting(material_t* material, point_light_t* light, tuple_t position, t
             specular = tuple_sc_mul(light->intensity, material->specular * factor);
         }
     }
+
+    if (in_shadow)
+        return ambient;
 
     return tuple_add(ambient, tuple_add(diffuse, specular));
 }

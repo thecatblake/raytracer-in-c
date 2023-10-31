@@ -13,6 +13,6 @@ typedef struct point_light_s {
     tuple_t intensity;
 } point_light_t;
 
-tuple_t lighting(material_t* material, point_light_t* light, tuple_t position, tuple_t eyev, tuple_t normalv);
+tuple_t lighting(material_t* material, point_light_t* light, tuple_t position, tuple_t eyev, tuple_t normalv, int in_shadow);
 
 #endif //RAY_TRACER_IN_C_LIGHT_H
