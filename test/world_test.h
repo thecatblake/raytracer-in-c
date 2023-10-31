@@ -277,6 +277,134 @@ TEST(test_color_intersection_behind_ray) {
     return MUNIT_OK;
 }
 
+TEST(test_no_shadow_when_nothing_collinear) {
+    world_t world;
+    world_init(&world);
+
+    point_light_t light = {point(-10, 10, -10), vector(1, 1, 1)};
+    world.light = &light;
+
+    object_t s1;
+    object_init(&s1);
+    s1.type_name = SPHERE;
+    material_t material;
+    material_init(&material);
+    material.color = vector(0.8, 1.0, 0.6);
+    material.diffuse = 0.7;
+    material.specular = 0.2;
+    s1.material = material;
+
+    object_t s2;
+    object_init(&s2);
+    s2.type_name = SPHERE;
+    object_scale(&s2, vector(0.5, 0.5, 0.5));
+
+    world_add_object(&world, &s1);
+    world_add_object(&world, &s2);
+
+    tuple_t p = point(0, 10, 0);
+
+    munit_assert_false(is_shadowed(&world, p));
+
+    return MUNIT_OK;
+}
+
+TEST(test_shadow_when_object_between) {
+    world_t world;
+    world_init(&world);
+
+    point_light_t light = {point(-10, 10, -10), vector(1, 1, 1)};
+    world.light = &light;
+
+    object_t s1;
+    object_init(&s1);
+    s1.type_name = SPHERE;
+    material_t material;
+    material_init(&material);
+    material.color = vector(0.8, 1.0, 0.6);
+    material.diffuse = 0.7;
+    material.specular = 0.2;
+    s1.material = material;
+
+    object_t s2;
+    object_init(&s2);
+    s2.type_name = SPHERE;
+    object_scale(&s2, vector(0.5, 0.5, 0.5));
+
+    world_add_object(&world, &s1);
+    world_add_object(&world, &s2);
+
+    tuple_t p = point(10, -10, 10);
+
+    munit_assert(is_shadowed(&world, p));
+
+    return MUNIT_OK;
+}
+
+TEST(test_no_shadow_when_object_behind_light) {
+    world_t world;
+    world_init(&world);
+
+    point_light_t light = {point(-10, 10, -10), vector(1, 1, 1)};
+    world.light = &light;
+
+    object_t s1;
+    object_init(&s1);
+    s1.type_name = SPHERE;
+    material_t material;
+    material_init(&material);
+    material.color = vector(0.8, 1.0, 0.6);
+    material.diffuse = 0.7;
+    material.specular = 0.2;
+    s1.material = material;
+
+    object_t s2;
+    object_init(&s2);
+    s2.type_name = SPHERE;
+    object_scale(&s2, vector(0.5, 0.5, 0.5));
+
+    world_add_object(&world, &s1);
+    world_add_object(&world, &s2);
+
+    tuple_t p = point(-20, 20, -20);
+
+    munit_assert_false(is_shadowed(&world, p));
+
+    return MUNIT_OK;
+}
+
+TEST(test_no_shadow_when_object_behind_point) {
+    world_t world;
+    world_init(&world);
+
+    point_light_t light = {point(-10, 10, -10), vector(1, 1, 1)};
+    world.light = &light;
+
+    object_t s1;
+    object_init(&s1);
+    s1.type_name = SPHERE;
+    material_t material;
+    material_init(&material);
+    material.color = vector(0.8, 1.0, 0.6);
+    material.diffuse = 0.7;
+    material.specular = 0.2;
+    s1.material = material;
+
+    object_t s2;
+    object_init(&s2);
+    s2.type_name = SPHERE;
+    object_scale(&s2, vector(0.5, 0.5, 0.5));
+
+    world_add_object(&world, &s1);
+    world_add_object(&world, &s2);
+
+    tuple_t p = point(-2, 2, -2);
+
+    munit_assert_false(is_shadowed(&world, p));
+
+    return MUNIT_OK;
+}
+
 #define WORLD_TESTS \
     {             \
         "intersect a world with a ray", \
@@ -341,6 +469,39 @@ TEST(test_color_intersection_behind_ray) {
         NULL,     \
         MUNIT_TEST_OPTION_NONE, \
         NULL\
+    },              \
+    {                \
+        "no shadow when nothing is collinear with point and light", \
+        test_no_shadow_when_nothing_collinear, \
+        NULL,     \
+        NULL,     \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
+    },              \
+    {                \
+        "The shadow when and object is between the point and the light", \
+        test_shadow_when_object_between, \
+        NULL,     \
+        NULL,     \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
+    },              \
+    {                \
+        "The shadow when an object is behind the light", \
+        test_no_shadow_when_object_behind_light, \
+        NULL,     \
+        NULL,     \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
+    },              \
+    {                \
+        "Theres is no shadow when an object is behind the light", \
+        test_no_shadow_when_object_behind_point, \
+        NULL,     \
+        NULL,     \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
     }
+
 
 #endif //RAY_TRACER_IN_C_WORLD_TEST_H
