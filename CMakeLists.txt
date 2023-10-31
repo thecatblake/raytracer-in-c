@@ -6,6 +6,7 @@ set(CMAKE_C_STANDARD 17)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(munit munit/munit.c)
+add_library(algorithms algorithms/list.c algorithms/heap.c)
 add_library(raytracer
         util.c
         tuple.c
@@ -15,12 +16,16 @@ add_library(raytracer
         sphere.c
         canvas.c
         material.c
-        light.c)
+        light.c
+        world.c
+        world.h)
 
 add_executable(ray_tracer_in_C main.c)
 add_executable(test test/tests.c
-        test/light_test.h)
+        test/light_test.h
+        test/world_test.h)
 add_executable(sphere_image sphere_image.c)
+target_link_libraries(raytracer algorithms)
 target_link_libraries(ray_tracer_in_C raytracer)
 target_link_libraries(test munit raytracer)
 target_link_libraries(sphere_image raytracer)

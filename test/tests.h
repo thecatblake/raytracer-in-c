@@ -14,6 +14,7 @@
 #include "object.h"
 #include "sphere.h"
 #include "light.h"
+#include "world.h"
 
 #define TEST(name) MunitResult name(const MunitParameter params[], void* user_data_or_fixture)
 

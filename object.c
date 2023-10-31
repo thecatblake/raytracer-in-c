@@ -5,6 +5,7 @@
 #include "object.h"
 
 void object_init(object_t* object) {
+    object->type_name = EMPTY_OBJECT;
     matrix_id(&object->origin_transform);
     matrix_id(&object->direction_transform);
     material_init(&object->material);

@@ -8,7 +8,13 @@
 #include "matrix.h"
 #include "material.h"
 
+enum object_type_name {
+    EMPTY_OBJECT,
+    SPHERE
+};
+
 typedef struct object_s {
+    enum object_type_name type_name;
     matrix_t origin_transform;
     matrix_t direction_transform;
     material_t material;
