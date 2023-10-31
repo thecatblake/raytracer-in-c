@@ -8,6 +8,10 @@
 #include "tuple.h"
 #include "matrix.h"
 
-matrix_t* view_transform(tuple_t from, tuple_t to, tuple_t up, matrix_t* buf);
+typedef matrix_t transformation_t;
+
+transformation_t* view_transform(tuple_t from, tuple_t to, tuple_t up, transformation_t* buf);
+
+#define add_transform(to, transform, buf) matrix_mul((to), (transform), (buf))
 
 #endif //RAY_TRACER_IN_C_TRANSFORMATION_H

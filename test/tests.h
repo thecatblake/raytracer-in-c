@@ -16,6 +16,8 @@
 #include "light.h"
 #include "world.h"
 #include "transformation.h"
+#include "camera.h"
+#include "canvas.h"
 
 #define TEST(name) MunitResult name(const MunitParameter params[], void* user_data_or_fixture)
 

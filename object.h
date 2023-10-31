@@ -7,6 +7,7 @@
 
 #include "matrix.h"
 #include "material.h"
+#include "transformation.h"
 
 enum object_type_name {
     EMPTY_OBJECT,
@@ -21,9 +22,10 @@ typedef struct object_s {
 } object_t;
 
 void object_init(object_t* object);
-void add_transform(object_t* object, matrix_t transform);
 void object_translate(object_t* object, tuple_t translation);
 void object_scale(object_t* object, tuple_t scale);
-void object_rotate(object_t* object, tuple_t rotation);
+void object_rotate_x(object_t* object, double rad);
+void object_rotate_y(object_t* object, double rad);
+void object_rotate_z(object_t* object, double rad);
 
 #endif //RAY_TRACER_IN_C_OBJECT_H

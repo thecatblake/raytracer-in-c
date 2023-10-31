@@ -5,6 +5,13 @@
 #include "canvas.h"
 #include <stdlib.h>
 
+tuple_t pixel_at(int width, tuple_t* pixels, int x, int y) {
+    return pixels[y * width + x];
+}
+void write_pixel(int width, tuple_t* pixels, int x, int y, tuple_t color) {
+    pixels[y * width + x] = color;
+}
+
 void canvas_fill(int width, int height, tuple_t* pixels, tuple_t color) {
     for(int y=0; y < height; y++) {
         for(int x=0; x < width; x++) {
