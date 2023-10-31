@@ -18,12 +18,14 @@ add_library(raytracer
         material.c
         light.c
         world.c
-        world.h)
+        world.h
+        transformation.c)
 
 add_executable(ray_tracer_in_C main.c)
 add_executable(test test/tests.c
         test/light_test.h
-        test/world_test.h)
+        test/world_test.h
+        test/transformation_test.h)
 add_executable(sphere_image sphere_image.c)
 target_link_libraries(raytracer algorithms)
 target_link_libraries(ray_tracer_in_C raytracer)
