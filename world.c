@@ -108,5 +108,8 @@ tuple_t color_at(world_t* world, ray_t* ray) {
 
     heap_extract(&intersections, (void**)&intersection);
     computation_t computation = prepare_computation(intersection, ray);
-    return shade_hit(world, &computation);
+    tuple_t color = shade_hit(world, &computation);
+
+    heap_destroy(&intersections);
+    return color;
 }

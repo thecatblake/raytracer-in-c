@@ -6,29 +6,51 @@
 #include "tuple.h"
 #include "object.h"
 #include "ray.h"
-#include "sphere.h"
 #include "canvas.h"
 #include "light.h"
+#include "world.h"
 
 int main() {
-    int width = 1800;
-    int height = 1800;
+    int width = 2500;
+    int height = 2500;
     int n_pixels = width * height;
 
     tuple_t* pixels = malloc(sizeof(tuple_t) * n_pixels);
 
-    object_t sphere;
-    object_init(&sphere);
-
-    object_scale(&sphere, vector(300, 300, 300));
-    object_translate(&sphere, vector(100, 100, 0));
-
+    object_t s1;
+    object_init(&s1);
+    s1.type_name = SPHERE;
+    object_scale(&s1, vector(300, 300, 300));
+    object_translate(&s1, vector(-500, 0, 0));
     material_t material;
     material_init(&material);
     material.color = vector(1, 0.2, 1);
-    sphere.material = material;
+    s1.material = material;
+
+    object_t s2;
+    object_init(&s2);
+    s2.type_name = SPHERE;
+    object_scale(&s2, vector(300, 300, 300));
+    object_translate(&s2, vector(100, 0, 0));
+    s2.material = material;
+    s2.material.color = vector(0.2, 1, 1);
+
+    object_t s3;
+    object_init(&s3);
+    s3.type_name = SPHERE;
+    object_scale(&s3, vector(300, 300, 300));
+    object_translate(&s3, vector(800, 0, 0));
+    s3.material = material;
+    s3.material.color = vector(1, 1, 0.2);
 
     point_light_t light = {point(-1000, 1000, -1000), vector(1, 1, 1)};
+
+    world_t world;
+    world_init(&world);
+    world_add_object(&world, &s1);
+    world_add_object(&world, &s2);
+    world_add_object(&world, &s3);
+    world.light = &light;
 
     tuple_t origin = point(0, 0, -4000);
 
@@ -40,31 +62,15 @@ int main() {
     for (int i=0; i < n_pixels; i++) {
         int y = (int)left_top.y - i / width;
         int x = (int)left_top.x + i % width;
-        //printf("x: %d, y: %d\n", x, y);
 
-        ray_t ray_original, ray_inv;
+        ray_t ray;
 
-        ray_original.origin = origin;
-        ray_original.direction = tuple_norm(vector(x - ray_original.origin.x, y - ray_original.origin.y, -ray_original.origin.z));
+        ray.origin = origin;
+        ray.direction = tuple_norm(vector(x - ray.origin.x, y - ray.origin.y, -ray.origin.z));
 
-        matrix_t origin_inv, direction_inv;
-        matrix_inv(sphere.origin_transform, &origin_inv);
-        matrix_inv(sphere.direction_transform, &direction_inv);
-        ray_inv.origin = tuple_transform(origin_inv, ray_original.origin);
-        ray_inv.direction = tuple_transform(direction_inv, ray_original.direction);
+        tuple_t color = color_at(&world, &ray);
 
-        double hits[2];
-        int hit_num;
-        sphere_hit(&ray_inv, hits, &hit_num);
-
-        if (hit_num > 0) {
-            tuple_t position = ray_position(&ray_original, hits[0]);
-            tuple_t normalv = sphere_normal_at(&sphere, position);
-            tuple_t eyev = tuple_neg(ray_original.direction);
-            tuple_t color = lighting(&sphere.material, &light, position, eyev, normalv);
-
-            pixels[i] = color;
-        }
+        pixels[i] = color;
     }
 
     FILE* fp = fopen("sphere_image.ppm", "w");
