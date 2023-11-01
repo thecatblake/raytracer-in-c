@@ -69,7 +69,7 @@ TEST(test_render_world_with_camera) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -79,7 +79,7 @@ TEST(test_render_world_with_camera) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 

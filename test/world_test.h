@@ -15,7 +15,7 @@ TEST(test_world_intersection) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -25,7 +25,7 @@ TEST(test_world_intersection) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 
@@ -54,7 +54,7 @@ TEST(test_hit_occur_outside) {
 
     ray_t ray = {point(0, 0, -5), vector(0, 0, 1)};
     object_t sphere;
-    object_init(&sphere);
+    sphere_init(&sphere);
     sphere.type_name = SPHERE;
 
     world_add_object(&world, &sphere);
@@ -79,7 +79,7 @@ TEST(test_hit_occur_inside) {
 
     ray_t ray = {point(0, 0, 0), vector(0, 0, 1)};
     object_t sphere;
-    object_init(&sphere);
+    sphere_init(&sphere);
     sphere.type_name = SPHERE;
 
     world_add_object(&world, &sphere);
@@ -109,7 +109,7 @@ TEST(test_shade_intersectoin) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -119,7 +119,7 @@ TEST(test_shade_intersectoin) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 
@@ -145,7 +145,7 @@ TEST(test_shade_intersectoin_inside) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -155,7 +155,7 @@ TEST(test_shade_intersectoin_inside) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 
@@ -186,7 +186,7 @@ TEST(test_color_ray_misses) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -196,7 +196,7 @@ TEST(test_color_ray_misses) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 
@@ -218,7 +218,7 @@ TEST(test_color_ray_hits) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -228,7 +228,7 @@ TEST(test_color_ray_hits) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 
@@ -250,7 +250,7 @@ TEST(test_color_intersection_behind_ray) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -261,7 +261,7 @@ TEST(test_color_intersection_behind_ray) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     s2.material = material;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
@@ -285,7 +285,7 @@ TEST(test_no_shadow_when_nothing_collinear) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -295,7 +295,7 @@ TEST(test_no_shadow_when_nothing_collinear) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 
@@ -317,7 +317,7 @@ TEST(test_shadow_when_object_between) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -327,7 +327,7 @@ TEST(test_shadow_when_object_between) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 
@@ -349,7 +349,7 @@ TEST(test_no_shadow_when_object_behind_light) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -359,7 +359,7 @@ TEST(test_no_shadow_when_object_behind_light) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 
@@ -381,7 +381,7 @@ TEST(test_no_shadow_when_object_behind_point) {
     world.light = &light;
 
     object_t s1;
-    object_init(&s1);
+    sphere_init(&s1);
     s1.type_name = SPHERE;
     material_t material;
     material_init(&material);
@@ -391,7 +391,7 @@ TEST(test_no_shadow_when_object_behind_point) {
     s1.material = material;
 
     object_t s2;
-    object_init(&s2);
+    sphere_init(&s2);
     s2.type_name = SPHERE;
     object_scale(&s2, vector(0.5, 0.5, 0.5));
 

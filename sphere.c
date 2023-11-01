@@ -37,11 +37,12 @@ void sphere_hit(ray_t* ray, double* buf, int* hit_num) {
     buf[1] = (-b + tmp) / a;
 }
 
+void sphere_init(object_t* object) {
+    object_init(object);
+    object->type_name = SPHERE;
+}
+
 tuple_t sphere_normal_at(object_t* sphere, tuple_t point) {
     matrix_t m;
-    tuple_t object_normal = tuple_transform(*matrix_inv(sphere->origin_transform, &m), point);
-
-    tuple_t world_normal = tuple_transform(*matrix_T(*matrix_inv(sphere->origin_transform, &m), &m), object_normal);
-    world_normal.w = 0;
-    return tuple_norm(world_normal);
+    return tuple_transform(*matrix_inv(sphere->origin_transform, &m), point);
 }

@@ -27,18 +27,19 @@ Heap world_intersect(world_t* world, ray_t* ray) {
         double hits[2];
         int hit_num;
 
+        ray_t ray_inv;
+
+        matrix_t origin_inv, direction_inv;
+        matrix_inv(object->origin_transform, &origin_inv);
+        matrix_inv(object->direction_transform, &direction_inv);
+        ray_inv.origin = tuple_transform(origin_inv, ray->origin);
+        ray_inv.direction = tuple_transform(direction_inv, ray->direction);
+
         switch (object->type_name) {
             case EMPTY_OBJECT:
                 break;
             case SPHERE:
             {
-                ray_t ray_inv;
-
-                matrix_t origin_inv, direction_inv;
-                matrix_inv(object->origin_transform, &origin_inv);
-                matrix_inv(object->direction_transform, &direction_inv);
-                ray_inv.origin = tuple_transform(origin_inv, ray->origin);
-                ray_inv.direction = tuple_transform(direction_inv, ray->direction);
                 sphere_hit(&ray_inv, hits, &hit_num);
 
                 if (hit_num == 0)
@@ -96,14 +97,7 @@ computation_t prepare_computation(intersection_t* intersection, ray_t* ray) {
             .eyev = tuple_neg(ray->direction)
     };
 
-    switch(intersection->object->type_name) {
-        case EMPTY_OBJECT:
-            computation.normalv = vector(0, 0, 0);
-            break;
-        case SPHERE:
-            computation.normalv = sphere_normal_at(computation.object, computation.position);
-            break;
-    }
+    computation.normalv = normal_at(intersection->object, computation.position);
 
     if (tuple_dot(computation.normalv, computation.eyev) < 0) {
         computation.inside = 1;
@@ -135,4 +129,22 @@ tuple_t color_at(world_t* world, ray_t* ray) {
 
     heap_destroy(&intersections);
     return color;
+}
+
+tuple_t normal_at(object_t* object, tuple_t position) {
+    matrix_t m;
+    tuple_t object_normal;
+
+    switch(object->type_name) {
+        case EMPTY_OBJECT:
+            object_normal = vector(0, 0, 0);
+            break;
+        case SPHERE:
+            object_normal = sphere_normal_at(object, position);
+            break;
+    }
+
+    tuple_t world_normal = tuple_transform(*matrix_T(*matrix_inv(object->origin_transform, &m), &m), object_normal);
+    world_normal.w = 0;
+    return tuple_norm(world_normal);
 }

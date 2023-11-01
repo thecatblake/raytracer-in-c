@@ -10,7 +10,7 @@
 TEST(test_sphere_hit) {
     ray_t ray = ray(point(-2, -2, 0), vector(1, 1, 0));
     object_t sphere;
-    object_init(&sphere);
+    sphere_init(&sphere);
 
     double buf[2];
     int hit_num;
@@ -25,10 +25,10 @@ TEST(test_sphere_hit) {
 
 TEST(test_sphere_normal_at) {
     object_t sphere;
-    object_init(&sphere);
+    sphere_init(&sphere);
     object_translate(&sphere, vector(0, 1, 0));
 
-    tuple_t n = sphere_normal_at(&sphere, point(0, 1.70711, -0.70711));
+    tuple_t n = normal_at(&sphere, point(0, 1.70711, -0.70711));
 
     munit_assert(tuple_cmp2(n, vector(0, 0.70711, -0.70711)));
 

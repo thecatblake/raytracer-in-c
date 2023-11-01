@@ -13,15 +13,13 @@
 
 int main() {
     object_t floor;
-    object_init(&floor);
-    floor.type_name = SPHERE;
+    sphere_init(&floor);
     object_scale(&floor, vector(10, 0.001, 10));
     floor.material.color = vector(1, 0.9, 0.9);
     floor.material.specular = 0;
 
     object_t left_wall;
-    object_init(&left_wall);
-    left_wall.type_name = SPHERE;
+    sphere_init(&left_wall);
     object_scale(&left_wall, vector(10, 0.01, 10));
     object_rotate_x(&left_wall, M_PI / 2);
     object_rotate_y(&left_wall, -M_PI / 4);
@@ -29,8 +27,7 @@ int main() {
     left_wall.material = floor.material;
 
     object_t right_wall;
-    object_init(&right_wall);
-    right_wall.type_name = SPHERE;
+    sphere_init(&right_wall);
     object_scale(&right_wall, vector(10, 0.01, 10));
     object_rotate_x(&right_wall, M_PI / 2);
     object_rotate_y(&right_wall, M_PI / 4);
@@ -38,16 +35,14 @@ int main() {
     right_wall.material = floor.material;
 
     object_t middle;
-    object_init(&middle);
-    middle.type_name = SPHERE;
+    sphere_init(&middle);
     object_translate(&middle, vector(-0.5, 1, 0.5));
     middle.material.color = vector(1, 0, 0);
     middle.material.diffuse = 0.7;
     middle.material.specular = 0.3;
 
     object_t right;
-    object_init(&right);
-    right.type_name = SPHERE;
+    sphere_init(&right);
     object_translate(&right, vector(1.5, 1, -0.5));
     object_scale(&right, vector(0.5, 0.5, 0.5));
     right.material.color = vector(0, 1, 0);
@@ -55,8 +50,7 @@ int main() {
     right.material.specular = 0.3;
 
     object_t left;
-    object_init(&left);
-    left.type_name = SPHERE;
+    sphere_init(&left);
     object_translate(&left, vector(-4.5, 1, -0.75));
     object_scale(&left, vector(0.33, 0.33, 0.33));
     left.material.color = vector(0, 0, 1);
