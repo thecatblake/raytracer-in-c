@@ -13,6 +13,7 @@
 #include "object.h"
 #include "sphere.h"
 #include "light.h"
+#include "plane.h"
 
 typedef struct world_s {
     List objects;

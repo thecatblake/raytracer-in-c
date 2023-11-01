@@ -61,6 +61,24 @@ Heap world_intersect(world_t* world, ray_t* ray) {
                 heap_insert(&intersections, intersection);
                 break;
             }
+            case PLANE:
+            {
+                plane_hit(&ray_inv, hits, &hit_num);
+
+                if (hit_num == 0)
+                    break;
+
+                if (hits[0] < 0)
+                    break;
+
+                intersection_t* intersection = malloc(sizeof(intersection_t));
+
+                intersection->t = hits[0];
+                intersection->object = object;
+
+                heap_insert(&intersections, intersection);
+                break;
+            }
         }
 
         object_elm = object_elm->next;
@@ -141,6 +159,9 @@ tuple_t normal_at(object_t* object, tuple_t position) {
             break;
         case SPHERE:
             object_normal = sphere_normal_at(object, position);
+            break;
+        case PLANE:
+            object_normal = plane_normal_at(object, position);
             break;
     }
 
