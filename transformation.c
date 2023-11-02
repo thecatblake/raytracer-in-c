@@ -19,3 +19,24 @@ matrix_t* view_transform(tuple_t from, tuple_t to, tuple_t up, matrix_t* buf) {
 
     return buf;
 }
+
+void transform_translate(matrix_t* to, tuple_t translate) {
+    matrix_t t;
+    matrix_mul(*to, *translation_matrix(translate.x, translate.y, translate.z, &t), to);
+}
+void transform_scale(matrix_t* to, tuple_t scale) {
+    matrix_t t;
+    matrix_mul(*to, *scaling_matrix(scale.x, scale.y, scale.z, &t), to);
+}
+void transform_rotate_x(matrix_t* to, double rad) {
+    matrix_t t;
+    matrix_mul(*to, *rotation_x_matrix(rad, &t), to);
+}
+void transform_rotate_y(matrix_t* to, double rad) {
+    matrix_t t;
+    matrix_mul(*to, *rotation_y_matrix(rad, &t), to);
+}
+void transform_rotate_z(matrix_t* to, double rad) {
+    matrix_t t;
+    matrix_mul(*to, *rotation_z_matrix(rad, &t), to);
+}
