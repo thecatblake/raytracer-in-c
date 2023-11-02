@@ -26,9 +26,13 @@ int main() {
     gradient_init(&gradient_pattern, &gradient);
     transform_translate(&gradient_pattern.transform, vector(0, 0, 1));
 
+    stripe_pattern_t check = {vector(0, 0, 0), vector(1, 1, 1)};
+    pattern_t check_pattern;
+    check_init(&check_pattern, &check);
+
     object_t floor;
     plane_init(&floor);
-    floor.material.pattern = gradient_pattern;
+    floor.material.pattern = check_pattern;
 
     object_t back_wall;
     plane_init(&back_wall);

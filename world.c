@@ -162,6 +162,8 @@ tuple_t pattern_at_object(object_t* object, tuple_t position) {
             return stripe_at(&object->material.pattern, pattern_point);
         case GRADIENT:
             return gradient_at(&object->material.pattern, pattern_point);
+        case CHECK:
+            return check_at(&object->material.pattern, pattern_point);
     }
 }
 
