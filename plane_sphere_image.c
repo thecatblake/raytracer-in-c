@@ -17,8 +17,13 @@
 #include "plane.h"
 
 int main() {
+    stripe_pattern_t stripe = {vector(0, 0, 0), vector(1, 1, 1)};
+    pattern_t pattern;
+    stripe_init(&pattern, &stripe);
+
     object_t floor;
     plane_init(&floor);
+    floor.material.pattern = pattern;
 
     object_t back_wall;
     plane_init(&back_wall);
@@ -43,6 +48,10 @@ int main() {
     middle.material.color = vector(1, 0, 0);
     middle.material.diffuse = 0.7;
     middle.material.specular = 0.3;
+
+    transform_scale(&pattern.transform, vector(0.1, 0.1, 0.1));
+    transform_rotate_z(&pattern.transform, M_PI/2);
+    middle.material.pattern = pattern;
 
     object_t right;
     sphere_init(&right);

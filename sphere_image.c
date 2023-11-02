@@ -10,8 +10,13 @@
 #include "light.h"
 #include "world.h"
 #include "camera.h"
+#include "pattern.h"
 
 int main() {
+    stripe_pattern_t stripe = {vector(0, 0, 0), vector(1, 1, 1)};
+    pattern_t pattern;
+    stripe_init(&pattern, &stripe);
+
     object_t floor;
     sphere_init(&floor);
     object_scale(&floor, vector(10, 0.001, 10));
@@ -56,6 +61,8 @@ int main() {
     left.material.color = vector(0, 0, 1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
+
+    floor.material.pattern = pattern;
 
     world_t world;
     world_init(&world);
