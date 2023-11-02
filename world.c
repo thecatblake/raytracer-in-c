@@ -143,10 +143,24 @@ tuple_t color_at(world_t* world, ray_t* ray) {
 
     heap_extract(&intersections, (void**)&intersection);
     computation_t computation = prepare_computation(intersection, ray);
+    intersection->object->material.color = pattern_at_object(intersection->object, computation.position);
     tuple_t color = shade_hit(world, &computation);
 
     heap_destroy(&intersections);
     return color;
+}
+
+tuple_t pattern_at_object(object_t* object, tuple_t position) {
+    matrix_t m;
+    tuple_t object_point = tuple_transform(*matrix_inv(object->origin_transform, &m), position);
+    tuple_t pattern_point = tuple_transform(*matrix_inv(object->material.pattern.transform, &m), object_point);
+
+    switch (object->material.pattern.type) {
+        case NO_PATTERN:
+            return object->material.color;
+        case STRIPE:
+            return stripe_at(&object->material.pattern, pattern_point);
+    }
 }
 
 tuple_t normal_at(object_t* object, tuple_t position) {

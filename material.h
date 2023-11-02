@@ -6,6 +6,7 @@
 #define RAY_TRACER_IN_C_MATERIAL_H
 
 #include "tuple.h"
+#include "pattern.h"
 
 typedef struct material_s {
     tuple_t color;
@@ -13,6 +14,7 @@ typedef struct material_s {
     double diffuse;
     double specular;
     double shininess;
+    pattern_t pattern;
 } material_t;
 
 void material_init(material_t* material);

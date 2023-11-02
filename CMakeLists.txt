@@ -21,6 +21,8 @@ add_library(raytracer
         transformation.c
         camera.c
         plane.c
+        pattern.c
+        pattern.h
 )
 
 add_executable(ray_tracer_in_C main.c)
@@ -29,7 +31,8 @@ add_executable(test test/tests.c
         test/world_test.h
         test/transformation_test.h
         test/camera_test.h
-        test/plane_test.h)
+        test/plane_test.h
+        test/pattern_test.h)
 add_executable(sphere_image sphere_image.c)
 add_executable(plane_sphere_image plane_sphere_image.c)
 target_link_libraries(raytracer algorithms)

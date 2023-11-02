@@ -41,6 +41,7 @@ int is_shadowed(world_t* world, tuple_t position);
 computation_t prepare_computation(intersection_t* intersection, ray_t* ray);
 tuple_t shade_hit(world_t* world, computation_t* computation);
 tuple_t color_at(world_t* world, ray_t* ray);
+tuple_t pattern_at_object(object_t* object, tuple_t position);
 tuple_t normal_at(object_t* object, tuple_t position);
 
 #define world_add_object(world, object) (list_ins_next(&(world)->objects, (world)->objects.tail, (object)))

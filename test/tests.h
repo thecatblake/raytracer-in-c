@@ -19,6 +19,7 @@
 #include "camera.h"
 #include "canvas.h"
 #include "plane.h"
+#include "pattern.h"
 
 #define TEST(name) MunitResult name(const MunitParameter params[], void* user_data_or_fixture)
 
