@@ -160,6 +160,8 @@ tuple_t pattern_at_object(object_t* object, tuple_t position) {
             return object->material.color;
         case STRIPE:
             return stripe_at(&object->material.pattern, pattern_point);
+        case GRADIENT:
+            return gradient_at(&object->material.pattern, pattern_point);
     }
 }
 

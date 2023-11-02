@@ -10,7 +10,8 @@
 
 enum pattern {
     NO_PATTERN,
-    STRIPE
+    STRIPE,
+    GRADIENT
 };
 
 typedef struct pattern_s {
@@ -26,6 +27,8 @@ typedef struct stripe_pattern_s {
 
 void pattern_init(pattern_t* pattern);
 void stripe_init(pattern_t* pattern, stripe_pattern_t* stripe);
+void gradient_init(pattern_t* pattern, stripe_pattern_t* stripe);
 tuple_t stripe_at(pattern_t* stripe, tuple_t position);
+tuple_t gradient_at(pattern_t* gradient, tuple_t position);
 
 #endif //RAY_TRACER_IN_C_PATTERN_H
