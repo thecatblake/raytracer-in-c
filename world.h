@@ -49,6 +49,7 @@ tuple_t pattern_at_object(object_t* object, tuple_t position);
 tuple_t normal_at(object_t* object, tuple_t position);
 tuple_t reflected_color(world_t* world, computation_t* computation, int remaining);
 tuple_t refracted_color(world_t* world, computation_t* computation, int remaining);
+double schlick(computation_t* computation);
 
 #define world_add_object(world, object) (list_ins_next(&(world)->objects, (world)->objects.tail, (object)))
 

@@ -22,6 +22,7 @@ int main() {
     object_scale(&floor, vector(10, 0.001, 10));
     floor.material.color = vector(1, 0.9, 0.9);
     floor.material.specular = 0;
+    floor.material.reflective = 1.0;
 
     object_t left_wall;
     sphere_init(&left_wall);
@@ -30,6 +31,7 @@ int main() {
     object_rotate_y(&left_wall, -M_PI / 4);
     object_translate(&left_wall, vector(0, 0, 5));
     left_wall.material = floor.material;
+    left_wall.material.reflective = 1.0;
 
     object_t right_wall;
     sphere_init(&right_wall);
@@ -38,6 +40,7 @@ int main() {
     object_rotate_y(&right_wall, M_PI / 4);
     object_translate(&right_wall, vector(0, 0, 5));
     right_wall.material = floor.material;
+    right_wall.material.reflective = 1.0;
 
     object_t middle;
     sphere_init(&middle);

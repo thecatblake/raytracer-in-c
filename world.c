@@ -178,6 +178,13 @@ tuple_t shade_hit(world_t* world, computation_t* computation, int remaining) {
     tuple_t reflected = reflected_color(world, computation, remaining);
     tuple_t refracted = refracted_color(world, computation, remaining);
 
+    material_t material = computation->object->material;
+
+    if(material.reflective > 0 && material.transparency > 0) {
+        double reflectance = schlick(computation);
+        return tuple_add(surface, tuple_add(tuple_sc_mul(reflected, reflectance), tuple_sc_mul(refracted, 1 - reflectance)));
+    }
+
     return tuple_add(surface, tuple_add(reflected, refracted));
 }
 
@@ -270,4 +277,22 @@ tuple_t refracted_color(world_t* world, computation_t* computation, int remainin
     tuple_t color = color_at(world, &refract_ray, remaining - 1);
 
     return tuple_sc_mul(color, computation->object->material.transparency);
+}
+
+double schlick(computation_t* computation) {
+    double cos = tuple_dot(computation->eyev, computation->normalv);
+
+    if (computation->n1 > computation->n2) {
+        double n = computation->n1 / computation->n2;
+        double sin2_t = n * n * (1.0 - cos * cos);
+        if (sin2_t > 1.0)
+            return 1.0;
+
+        cos = sqrt(1.0 - sin2_t);
+    }
+
+    double r0 = ((computation->n1 - computation->n2) / (computation->n1 + computation->n2));
+    r0 *= r0;
+
+    return r0 + (1 - r0) * pow(1 - cos, 5);
 }

@@ -886,6 +886,124 @@ TEST(test_shade_hit_with_transparent_material) {
     return MUNIT_OK;
 };
 
+TEST(test_schlick_approximation_under_total_internal_reflection) {
+    object_t shape;
+    glass_sphere_init(&shape);
+    ray_t ray = {point(0, 0, sqrt(2)/2), vector(0, 1, 0)};
+    intersection_t xs[] = {
+            {-sqrt(2)/2, &shape},
+            {sqrt(2)/2, &shape}
+    };
+    List intersections;
+    list_init(&intersections, NULL);
+    list_ins_next(&intersections, intersections.tail, &xs[0]);
+    list_ins_next(&intersections, intersections.tail, &xs[1]);
+
+    computation_t computation = prepare_computation(&xs[1], &ray, &intersections);
+    double reflectance = schlick(&computation);
+
+    munit_assert(double_cmp2(reflectance, 1.0));
+
+    return MUNIT_OK;
+};
+
+TEST(test_schlick_approximation_with_perpendicular_angle) {
+    object_t shape;
+    glass_sphere_init(&shape);
+    ray_t ray = {point(0, 0, 0), vector(0, 1, 0)};
+    intersection_t xs[] = {
+            {-1, &shape},
+            {1, &shape}
+    };
+    List intersections;
+    list_init(&intersections, NULL);
+    list_ins_next(&intersections, intersections.tail, &xs[0]);
+    list_ins_next(&intersections, intersections.tail, &xs[1]);
+
+    computation_t computation = prepare_computation(&xs[1], &ray, &intersections);
+    double reflectance = schlick(&computation);
+
+    munit_assert(double_cmp2(reflectance, 0.04));
+
+    return MUNIT_OK;
+};
+
+TEST(test_schlick_approximation_with_small_angle_and_n2_n1) {
+    object_t shape;
+    glass_sphere_init(&shape);
+    ray_t ray = {point(0, 0.99, -2), vector(0, 0, 1)};
+    intersection_t xs[] = {
+            {1.8589, &shape}
+    };
+    List intersections;
+    list_init(&intersections, NULL);
+    list_ins_next(&intersections, intersections.tail, &xs[0]);
+
+    computation_t computation = prepare_computation(&xs[0], &ray, &intersections);
+    double reflectance = schlick(&computation);
+
+    munit_assert(double_cmp2(reflectance, 0.48873));
+
+    return MUNIT_OK;
+};
+
+TEST(test_shade_hit_with_reflective_transparent_material) {
+    world_t world;
+    world_init(&world);
+
+    point_light_t light = {point(-10, 10, -10), vector(1, 1, 1)};
+    world.light = &light;
+
+    object_t s1;
+    sphere_init(&s1);
+    s1.type_name = SPHERE;
+    material_t material;
+    material_init(&material);
+    material.color = vector(0.8, 1.0, 0.6);
+    material.diffuse = 0.7;
+    material.specular = 0.2;
+    s1.material = material;
+
+    object_t s2;
+    sphere_init(&s2);
+
+    object_scale(&s2, vector(0.5, 0.5, 0.5));
+
+    world_add_object(&world, &s1);
+    world_add_object(&world, &s2);
+
+    ray_t ray = {point(0, 0, -3), vector(0, -sqrt(2)/2, sqrt(2)/2)};
+    object_t floor;
+    plane_init(&floor);
+    object_translate(&floor, vector(0, -1, 0));
+    floor.material.reflective = 0.5;
+    floor.material.transparency = 0.5;
+    floor.material.refractive_index = 1.5;
+    object_t ball;
+    sphere_init(&ball);
+    ball.material.color = vector(1, 0, 0);
+    ball.material.ambient = 0.5;
+    object_translate(&ball, vector(0, -3.5, -0.5));
+    world_add_object(&world, &floor);
+    world_add_object(&world, &ball);
+
+    intersection_t xs[] = {
+            {sqrt(2), &floor}
+    };
+    List intersections;
+    list_init(&intersections, NULL);
+    list_ins_next(&intersections, intersections.tail, &xs[0]);
+    computation_t computation = prepare_computation(&xs[0], &ray, &intersections);
+
+    tuple_t color = shade_hit(&world, &computation, 5);
+
+    tuple_print(color);
+
+    munit_assert(tuple_cmp2(color, vector(0.93391, 0.69642, 0.69243)));
+
+    return MUNIT_OK;
+};
+
 #define WORLD_TESTS \
     {             \
         "intersect a world with a ray", \
@@ -1074,6 +1192,38 @@ TEST(test_shade_hit_with_transparent_material) {
     {                \
         "shade_hit with a transparent material", \
         test_shade_hit_with_transparent_material, \
+        NULL,     \
+        NULL,     \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
+    },              \
+    {                \
+        "The Schick approximation under total internal reflection", \
+        test_schlick_approximation_under_total_internal_reflection, \
+        NULL,     \
+        NULL,     \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
+    },              \
+    {                \
+        "The Schick approximation with a perpendicular viewing angle", \
+        test_schlick_approximation_with_perpendicular_angle, \
+        NULL,     \
+        NULL,     \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
+    },              \
+    {                \
+        "The Schick approximation with small angle and n2 > n1", \
+        test_schlick_approximation_with_small_angle_and_n2_n1, \
+        NULL,     \
+        NULL,     \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
+    },              \
+    {                \
+        "shade_hit with a reflective, transparent material", \
+        test_shade_hit_with_reflective_transparent_material, \
         NULL,     \
         NULL,     \
         MUNIT_TEST_OPTION_NONE, \
