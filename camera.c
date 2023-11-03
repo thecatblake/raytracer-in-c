@@ -30,7 +30,7 @@ void camera_render(camera_t* camera, world_t* world, tuple_t* pixels) {
     for (int y=0; y < camera->vsize; y++) {
         for (int x=0; x < camera->hsize; x++) {
             ray = ray_for_pixel(camera, x, y);
-            color = color_at(world, &ray);
+            color = color_at(world, &ray, 5);
             pixels[y * camera->vsize + x] = color;
         }
     }

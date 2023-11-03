@@ -42,6 +42,13 @@ void sphere_init(object_t* object) {
     object->type_name = SPHERE;
 }
 
+void glass_sphere_init(object_t* object) {
+    object_init(object);
+    object->type_name = SPHERE;
+    object->material.transparency = 1.0;
+    object->material.refractive_index = 1.5;
+}
+
 tuple_t sphere_normal_at(object_t* sphere, tuple_t point) {
     matrix_t m;
     return tuple_transform(*matrix_inv(sphere->origin_transform, &m), point);

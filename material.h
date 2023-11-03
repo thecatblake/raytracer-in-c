@@ -14,6 +14,9 @@ typedef struct material_s {
     double diffuse;
     double specular;
     double shininess;
+    double reflective;
+    double transparency;
+    double refractive_index;
     pattern_t pattern;
 } material_t;
 

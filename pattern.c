@@ -28,6 +28,12 @@ void check_init(pattern_t* pattern, stripe_pattern_t* stripe) {
     pattern->obj = stripe;
 }
 
+void testpattern_init(pattern_t* pattern) {
+    pattern_init(pattern);
+    pattern->type = TEST;
+    pattern->obj = NULL;
+}
+
 tuple_t stripe_at(pattern_t* stripe_pattern, tuple_t position) {
     stripe_pattern_t* stripe = stripe_pattern->obj;
 
@@ -52,4 +58,8 @@ tuple_t check_at(pattern_t* check, tuple_t position) {
         return stripe->a;
 
     return stripe->b;
+}
+
+tuple_t testpattern_at(pattern_t* pattern, tuple_t position) {
+    return position;
 }

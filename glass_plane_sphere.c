@@ -1,4 +1,7 @@
 //
+// Created by ryousuke kaga on 2023/11/03.
+//
+//
 // Created by ryousuke kaga on 2023/11/02.
 //
 
@@ -33,49 +36,31 @@ int main() {
     object_t floor;
     plane_init(&floor);
     floor.material.pattern = check_pattern;
-    floor.material.reflective = 0.5;
+    floor.material.reflective = 1.0;
 
     object_t back_wall;
     plane_init(&back_wall);
     object_rotate_x(&back_wall, M_PI / 2);
     object_translate(&back_wall, vector(0, 0, 7));
-
-    object_t left_wall;
-    plane_init(&left_wall);
-    object_rotate_x(&left_wall, M_PI / 2);
-    object_rotate_y(&left_wall, -M_PI / 2);
-    object_translate(&left_wall, vector(-5, 0, 0));
-
-    object_t right_wall;
-    plane_init(&right_wall);
-    object_rotate_x(&right_wall, M_PI / 2);
-    object_rotate_y(&right_wall, M_PI / 2);
-    object_translate(&right_wall, vector(5, 0, 0));
+    back_wall.material.pattern = check_pattern;
 
     object_t middle;
     sphere_init(&middle);
     object_translate(&middle, vector(-0.5, 1, 0.5));
     middle.material.color = vector(1, 0, 0);
-    middle.material.diffuse = 0.7;
-    middle.material.specular = 0.3;
-    middle.material.refractive_index = 1.5;
-    middle.material.transparency = 1.0;
 
     object_t right;
     sphere_init(&right);
     object_translate(&right, vector(1.5, 1, -0.5));
     object_scale(&right, vector(0.5, 0.5, 0.5));
     right.material.color = vector(0, 1, 0);
-    right.material.diffuse = 0.7;
-    right.material.specular = 0.3;
 
     object_t left;
     sphere_init(&left);
     object_translate(&left, vector(-4.5, 1, -0.75));
     object_scale(&left, vector(0.33, 0.33, 0.33));
     left.material.color = vector(0, 0, 1);
-    left.material.diffuse = 0.7;
-    left.material.specular = 0.3;
+
 
     world_t world;
     world_init(&world);
@@ -100,7 +85,7 @@ int main() {
 
     camera_render(&camera, &world, pixels);
 
-    FILE* fp = fopen("sphere_plane_image.ppm", "w");
+    FILE* fp = fopen("glass_sphere_plane_image.ppm", "w");
     canvas_write_ppm(width, height, pixels, fp);
 
     fclose(fp);

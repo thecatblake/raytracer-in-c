@@ -110,3 +110,12 @@ int heap_extract(Heap* heap, void** data) {
 
     return 0;
 }
+
+void heap_to_list(Heap* heap, List* buf) {
+    void* data;
+
+    while(heap->size > 0) {
+        heap_extract(heap, &data);
+        list_ins_next(buf, buf->tail, data);
+    }
+}
