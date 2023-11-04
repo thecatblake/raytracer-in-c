@@ -43,9 +43,7 @@ int main() {
     object_rotate_y(&middle, M_PI/4);
     object_translate(&middle, vector(-0.5, 1, 1));
     middle.material.color = vector(0.8, 0.8, 0.8);
-    middle.material.refractive_index = 1.5;
-    middle.material.transparency = 1.0;
-    middle.material.reflective = 0.5;
+    middle.material.reflective = 1.0;
 
     object_t right;
     sphere_init(&right);

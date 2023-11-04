@@ -70,6 +70,7 @@ int main() {
     right.material.color = vector(0, 1, 0);
     right.material.diffuse = 0.7;
     right.material.specular = 0.3;
+    right.material.reflective = 1.0;
 
     object_t left;
     sphere_init(&left);
@@ -78,6 +79,7 @@ int main() {
     left.material.color = vector(0, 0, 1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
+    left.material.reflective = 1.0;
 
     world_t world;
     world_init(&world);
