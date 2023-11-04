@@ -12,6 +12,7 @@
 #include "camera_test.h"
 #include "plane_test.h"
 #include "pattern_test.h"
+#include "cube_test.h"
 
 MunitTest tests[] = {
         TUPLE_TESTS,
@@ -23,7 +24,8 @@ MunitTest tests[] = {
         TRANSFORMATION_TESTS,
         CAMERA_TESTS,
         PLANE_TESTS,
-        PATTERN_TESTS
+        PATTERN_TESTS,
+        CUBE_TESTS
 };
 
 static const MunitSuite suite = {

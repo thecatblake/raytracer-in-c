@@ -1,10 +1,7 @@
 //
-// Created by ryousuke kaga on 2023/11/02.
+// Created by ryousuke kaga on 2023/11/04.
 //
 
-//
-// Created by ryousuke kaga on 2023/10/26.
-//
 #include <stdlib.h>
 #include <stdio.h>
 #include "tuple.h"
@@ -15,6 +12,7 @@
 #include "world.h"
 #include "camera.h"
 #include "plane.h"
+#include "cube.h"
 
 int main() {
     stripe_pattern_t stripe = {vector(0, 0, 0), vector(1, 1, 1)};
@@ -29,7 +27,6 @@ int main() {
     stripe_pattern_t check = {vector(0, 0, 0), vector(1, 1, 1)};
     pattern_t check_pattern;
     check_init(&check_pattern, &check);
-    transform_scale(&check_pattern.transform, vector(0.2, 0.2, 0.2));
 
     object_t floor;
     plane_init(&floor);
@@ -40,32 +37,19 @@ int main() {
     plane_init(&back_wall);
     object_rotate_x(&back_wall, M_PI / 2);
     object_translate(&back_wall, vector(0, 0, 7));
-    back_wall.material.pattern = check_pattern;
-
-    object_t left_wall;
-    plane_init(&left_wall);
-    object_rotate_x(&left_wall, M_PI / 2);
-    object_rotate_y(&left_wall, -M_PI / 2);
-    object_translate(&left_wall, vector(-5, 0, 0));
-
-    object_t right_wall;
-    plane_init(&right_wall);
-    object_rotate_x(&right_wall, M_PI / 2);
-    object_rotate_y(&right_wall, M_PI / 2);
-    object_translate(&right_wall, vector(5, 0, 0));
 
     object_t middle;
-    sphere_init(&middle);
-    object_translate(&middle, vector(-0.5, 1, 0.5));
-    middle.material.color = vector(1, 0, 0);
-    middle.material.diffuse = 0.7;
-    middle.material.specular = 0.3;
+    cube_init(&middle);
+    object_rotate_y(&middle, M_PI/4);
+    object_translate(&middle, vector(-0.5, 1, 1));
+    middle.material.color = vector(0.8, 0.8, 0.8);
     middle.material.refractive_index = 1.5;
     middle.material.transparency = 1.0;
+    middle.material.reflective = 0.5;
 
     object_t right;
     sphere_init(&right);
-    object_translate(&right, vector(1.5, 1, -0.5));
+    object_translate(&right, vector(3.5, 1, -0.5));
     object_scale(&right, vector(0.5, 0.5, 0.5));
     right.material.color = vector(0, 1, 0);
     right.material.diffuse = 0.7;
@@ -73,7 +57,7 @@ int main() {
 
     object_t left;
     sphere_init(&left);
-    object_translate(&left, vector(-4.5, 1, -0.75));
+    object_translate(&left, vector(-5.5, 1, -0.75));
     object_scale(&left, vector(0.33, 0.33, 0.33));
     left.material.color = vector(0, 0, 1);
     left.material.diffuse = 0.7;
@@ -86,7 +70,6 @@ int main() {
     world.light = &light;
     world_add_object(&world, &floor);
     world_add_object(&world, &middle);
-    world_add_object(&world, &back_wall);
     world_add_object(&world, &left);
     world_add_object(&world, &right);
 
@@ -103,7 +86,7 @@ int main() {
 
     camera_render(&camera, &world, pixels);
 
-    FILE* fp = fopen("sphere_plane_image.ppm", "w");
+    FILE* fp = fopen("cube_image.ppm", "w");
     canvas_write_ppm(width, height, pixels, fp);
 
     fclose(fp);

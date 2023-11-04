@@ -12,7 +12,8 @@
 enum object_type_name {
     EMPTY_OBJECT,
     SPHERE,
-    PLANE
+    PLANE,
+    CUBE
 };
 
 typedef struct object_s {

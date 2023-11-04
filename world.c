@@ -37,48 +37,35 @@ Heap world_intersect(world_t* world, ray_t* ray) {
 
         switch (object->type_name) {
             case EMPTY_OBJECT:
+                hit_num = 0;
                 break;
             case SPHERE:
             {
                 sphere_hit(&ray_inv, hits, &hit_num);
-
-                if (hit_num == 0)
-                    break;
-
-                double hit = hits[0];
-                if (hit_num == 1 && hit < 0)
-                    break;
-                if (hit_num == 2 && hit <0 && hits[1] < 0)
-                    break;
-                if (hit_num == 2 && hit < 0 && hits[1] > 0)
-                    hit = hits[1];
-
-                intersection_t* intersection = malloc(sizeof(intersection_t));
-
-                intersection->t = hit;
-                intersection->object = object;
-
-                heap_insert(&intersections, intersection);
                 break;
             }
             case PLANE:
             {
                 plane_hit(&ray_inv, hits, &hit_num);
-
-                if (hit_num == 0)
-                    break;
-
-                if (hits[0] < 0)
-                    break;
-
-                intersection_t* intersection = malloc(sizeof(intersection_t));
-
-                intersection->t = hits[0];
-                intersection->object = object;
-
-                heap_insert(&intersections, intersection);
                 break;
             }
+            case CUBE:
+            {
+                cube_hit(&ray_inv, hits, &hit_num);
+                break;
+            }
+        }
+
+        for(int i=0; i < hit_num; i++) {
+            if(hits[i] < 0)
+                continue;
+
+            intersection_t* intersection = malloc(sizeof(intersection_t));
+
+            intersection->t = hits[i];
+            intersection->object = object;
+
+            heap_insert(&intersections, intersection);
         }
 
         object_elm = object_elm->next;
@@ -241,6 +228,9 @@ tuple_t normal_at(object_t* object, tuple_t position) {
             break;
         case PLANE:
             object_normal = plane_normal_at(object, position);
+            break;
+        case CUBE:
+            object_normal = cube_normal_at(object, position);
             break;
     }
 
