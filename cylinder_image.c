@@ -36,19 +36,23 @@ int main() {
     object_t cylinder;
     cylinder_data_t cyl_data = {
             .maximum = 5,
-            .minimum = -5
+            .minimum = -5,
+            .closed = 1
     };
     cylinder_init(&cylinder, &cyl_data);
     cylinder.material.color = vector(1, 0, 0);
     cylinder.material.reflective = 0.6;
 
     object_t right;
-    sphere_init(&right);
-    object_translate(&right, vector(3.5, 1, -1));
+    cylinder_data_t right_data = {
+            .maximum = 2,
+            .minimum = -2,
+            .closed = 1
+    };
+    cylinder_init(&right, &right_data);
     object_scale(&right, vector(0.5, 0.5, 0.5));
+    object_translate(&right, vector(0, 0, -2));
     right.material.color = vector(0, 1, 0);
-    right.material.diffuse = 0.7;
-    right.material.specular = 0.3;
 
     object_t left;
     sphere_init(&left);

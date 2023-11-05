@@ -9,7 +9,12 @@
 
 TEST(test_ray_misses_cylinder) {
     object_t cyl;
-    cylinder_init(&cyl, NULL);
+    cylinder_data_t data = {
+            .minimum = 100,
+            .maximum = -100,
+            .closed = 0
+    };
+    cylinder_init(&cyl, &data);
 
     tuple_t origins[] = {
         point(1, 0, 0),
@@ -38,7 +43,12 @@ TEST(test_ray_misses_cylinder) {
 
 TEST(test_ray_strikes_cylinder) {
     object_t cyl;
-    cylinder_init(&cyl, NULL);
+    cylinder_data_t data = {
+            .minimum = 100,
+            .maximum = -100,
+            .closed = 0
+    };
+    cylinder_init(&cyl, &data);
 
     tuple_t origins[] = {
             point(1, 0, -5),
@@ -75,7 +85,12 @@ TEST(test_ray_strikes_cylinder) {
 
 TEST(test_normal_vector_on_cylinder) {
     object_t cyl;
-    cylinder_init(&cyl, NULL);
+    cylinder_data_t data = {
+            .minimum = 100,
+            .maximum = -100,
+            .closed = 0
+    };
+    cylinder_init(&cyl, &data);
 
     tuple_t points[] = {
             point(1, 0, 0),
@@ -104,7 +119,8 @@ TEST(test_intersect_constrained_cylinder) {
     object_t cylinder;
     cylinder_data_t data = {
             .minimum = 1,
-            .maximum = 2
+            .maximum = 2,
+            .closed = 0
     };
     cylinder_init(&cylinder, &data);
 
@@ -147,6 +163,43 @@ TEST(test_intersect_constrained_cylinder) {
     return MUNIT_OK;
 };
 
+TEST(test_intersect_caps_of_closed_cylinder) {
+    object_t cylinder;
+    cylinder_data_t data = {
+            .minimum = 1,
+            .maximum = 2,
+            .closed = 1
+    };
+    cylinder_init(&cylinder, &data);
+
+    tuple_t origins[] = {
+            point(0, 3, 0),
+            point(0, 3, -2),
+            point(0, 4, -2),
+            point(0, 0, -2),
+            point(0, -1, -2)
+    };
+
+    tuple_t directions[] = {
+            vector(0, -1, 0),
+            vector(0, -1, 2),
+            vector(0, -1, 1),
+            vector(0, 1, 2),
+            vector(0, 1, 1)
+    };
+
+    for(int i=0; i < 5; i++) {
+        ray_t ray = {origins[i],directions[i]};
+        double hits[2];
+        int hit_num;
+        cylinder_hit(&cylinder, &ray, hits, &hit_num);
+
+        munit_assert(hit_num == 2);
+    }
+
+    return MUNIT_OK;
+};
+
 #define CYLINDER_TESTS \
     {             \
         "A ray misses a cylinder", \
@@ -179,6 +232,15 @@ TEST(test_intersect_constrained_cylinder) {
         NULL,     \
         MUNIT_TEST_OPTION_NONE, \
         NULL\
+    },                 \
+    {             \
+        "Intersecting the caps of a closed cylinder", \
+        test_intersect_caps_of_closed_cylinder, \
+        NULL,     \
+        NULL,     \
+        MUNIT_TEST_OPTION_NONE, \
+        NULL\
     }
+
 
 #endif //RAY_TRACER_IN_C_CYLINDER_TEST_H
