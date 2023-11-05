@@ -22,9 +22,21 @@ void cylinder_hit(ray_t* ray, double* buf, int* hit_num) {
         return;
     }
 
-    *hit_num = 2;
-    buf[0] = (-b - sqrt(discriminant)) / a;
-    buf[1] = (-b + sqrt(discriminant)) / a;
+    *hit_num = 0;
+    double t0 = (-b - sqrt(discriminant)) / a;
+    double t1 = (-b + sqrt(discriminant)) / a;
+
+    double y0 = ray->origin.y + t0 * ray->direction.y;
+    if (fabs(y0) < 1) {
+        *hit_num += 1;
+        buf[0] = t0;
+    }
+
+    double y1 = ray->origin.y + t1 * ray->direction.y;
+    if (fabs(y1) < 1) {
+        *hit_num += 1;
+        buf[1] = t1;
+    }
 }
 void cylinder_init(object_t* object) {
     object_init(object);

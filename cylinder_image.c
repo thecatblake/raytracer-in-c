@@ -50,7 +50,7 @@ int main() {
 
     camera_t camera;
     camera_init(&camera, width, height, M_PI / 3);
-    camera_transform(&camera, point(0, 1, -15), point(0, 8, 1), vector(0, 10, 0));
+    camera_transform(&camera, point(0, 1, -5), point(0, 0, 1), vector(0, 10, 0));
 
     int n_pixels = width * height;
 
