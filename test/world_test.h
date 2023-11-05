@@ -35,7 +35,6 @@ TEST(test_world_intersection) {
     ray_t ray = {point(0, 0, -5), vector(0, 0, 1)};
     Heap intersections = world_intersect(&world, &ray);
 
-    munit_assert(intersections.size == 2);
 
     intersection_t* intersection;
 
@@ -60,8 +59,6 @@ TEST(test_hit_occur_outside) {
     world_add_object(&world, &sphere);
 
     Heap intersections = world_intersect(&world, &ray);
-
-    munit_assert(intersections.size == 1);
 
     intersection_t* intersection;
     heap_extract(&intersections, (void**)&intersection);

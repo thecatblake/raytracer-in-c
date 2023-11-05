@@ -54,6 +54,11 @@ Heap world_intersect(world_t* world, ray_t* ray) {
                 cube_hit(&ray_inv, hits, &hit_num);
                 break;
             }
+            case CYLINDER:
+            {
+                cylinder_hit(&ray_inv, hits, &hit_num);
+                break;
+            }
         }
 
         for(int i=0; i < hit_num; i++) {
@@ -232,6 +237,8 @@ tuple_t normal_at(object_t* object, tuple_t position) {
         case CUBE:
             object_normal = cube_normal_at(object, position);
             break;
+        case CYLINDER:
+            object_normal = cylinder_normal_at(object, position);
     }
 
     tuple_t world_normal = tuple_transform(*matrix_T(*matrix_inv(object->origin_transform, &m), &m), object_normal);

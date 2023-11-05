@@ -21,6 +21,7 @@
 #include "plane.h"
 #include "pattern.h"
 #include "cube.h"
+#include "cylinder.h"
 
 #define TEST(name) MunitResult name(const MunitParameter params[], void* user_data_or_fixture)
 

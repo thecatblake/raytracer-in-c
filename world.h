@@ -15,6 +15,7 @@
 #include "light.h"
 #include "plane.h"
 #include "cube.h"
+#include "cylinder.h"
 
 typedef struct world_s {
     List objects;
