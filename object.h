@@ -22,6 +22,7 @@ typedef struct object_s {
     matrix_t origin_transform;
     matrix_t direction_transform;
     material_t material;
+    void* data;
 } object_t;
 
 void object_init(object_t* object);

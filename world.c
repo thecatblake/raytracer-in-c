@@ -56,7 +56,7 @@ Heap world_intersect(world_t* world, ray_t* ray) {
             }
             case CYLINDER:
             {
-                cylinder_hit(&ray_inv, hits, &hit_num);
+                cylinder_hit(object, &ray_inv, hits, &hit_num);
                 break;
             }
         }

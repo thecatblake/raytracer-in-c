@@ -34,8 +34,29 @@ int main() {
     floor.material.reflective = 0.5;
 
     object_t cylinder;
-    cylinder_init(&cylinder);
-    cylinder.material.color = vector(0.6, 0.9, 0.6);
+    cylinder_data_t cyl_data = {
+            .maximum = 5,
+            .minimum = -5
+    };
+    cylinder_init(&cylinder, &cyl_data);
+    cylinder.material.color = vector(1, 0, 0);
+    cylinder.material.reflective = 0.6;
+
+    object_t right;
+    sphere_init(&right);
+    object_translate(&right, vector(3.5, 1, -1));
+    object_scale(&right, vector(0.5, 0.5, 0.5));
+    right.material.color = vector(0, 1, 0);
+    right.material.diffuse = 0.7;
+    right.material.specular = 0.3;
+
+    object_t left;
+    sphere_init(&left);
+    object_translate(&left, vector(-4.5, 1, -1));
+    object_scale(&left, vector(0.33, 0.33, 0.33));
+    left.material.color = vector(0, 0, 1);
+    left.material.diffuse = 0.7;
+    left.material.specular = 0.3;
 
     world_t world;
     world_init(&world);
@@ -44,6 +65,8 @@ int main() {
     world.light = &light;
     world_add_object(&world, &floor);
     world_add_object(&world, &cylinder);
+    world_add_object(&world, &left);
+    world_add_object(&world, &right);
 
     int width = 2000;
     int height = 2000;
