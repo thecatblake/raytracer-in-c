@@ -23,6 +23,7 @@ typedef struct object_s {
     matrix_t origin_transform;
     matrix_t direction_transform;
     material_t material;
+    struct object_s* parent;
     void* data;
 } object_t;
 

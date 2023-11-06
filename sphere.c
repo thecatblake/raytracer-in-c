@@ -50,6 +50,5 @@ void glass_sphere_init(object_t* object) {
 }
 
 tuple_t sphere_normal_at(object_t* sphere, tuple_t point) {
-    matrix_t m;
-    return tuple_transform(*matrix_inv(sphere->origin_transform, &m), point);
+    return point;
 }

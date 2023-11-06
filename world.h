@@ -17,6 +17,7 @@
 #include "plane.h"
 #include "cube.h"
 #include "cylinder.h"
+#include "group.h"
 
 typedef struct world_s {
     List objects;
@@ -48,6 +49,8 @@ tuple_t normal_at(object_t* object, tuple_t position);
 tuple_t reflected_color(world_t* world, computation_t* computation, int remaining);
 tuple_t refracted_color(world_t* world, computation_t* computation, int remaining);
 double schlick(computation_t* computation);
+tuple_t world_to_object(object_t* object, tuple_t point);
+tuple_t normal_to_world(object_t* object, tuple_t normal);
 
 #define world_add_object(world, object) (list_ins_next(&(world)->objects, (world)->objects.tail, (object)))
 

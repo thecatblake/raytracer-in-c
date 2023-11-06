@@ -17,15 +17,15 @@ void world_init(world_t* world) {
 
 Heap world_intersect(world_t* world, ray_t* ray) {
     Heap intersections;
-    heap_init(&intersections, intersection_compare, free);
+    heap_init(&intersections, intersection_compare, NULL);
 
     object_t* object;
     ListElm* object_elm = list_head(&world->objects);
 
     while(object_elm) {
         object = list_data(object_elm);
-        intersection_t* hits = malloc(sizeof(intersection_t) * 2);
-        int hit_num;
+        intersection_t* hits;
+        int hit_num = 0;
 
         ray_t ray_inv;
 
@@ -37,26 +37,37 @@ Heap world_intersect(world_t* world, ray_t* ray) {
 
         switch (object->type_name) {
             case EMPTY_OBJECT:
-                hit_num = 0;
                 break;
             case SPHERE:
             {
+                hits = malloc(sizeof(intersection_t) * 2);
                 sphere_hit(object, &ray_inv, hits, &hit_num);
                 break;
             }
             case PLANE:
             {
+                hits = malloc(sizeof(intersection_t) * 1);
                 plane_hit(object, &ray_inv, hits, &hit_num);
                 break;
             }
             case CUBE:
             {
+                hits = malloc(sizeof(intersection_t) * 2);
                 cube_hit(object, &ray_inv, hits, &hit_num);
                 break;
             }
             case CYLINDER:
             {
+                hits = malloc(sizeof(intersection_t) * 2);
                 cylinder_hit(object, &ray_inv, hits, &hit_num);
+                break;
+            }
+            case GROUP:
+            {
+                int n;
+                group_object_num(object, &n);
+                hits = malloc(sizeof(intersection_t) * n * 2);
+                group_hit(object, &ray_inv, hits, &hit_num);
                 break;
             }
         }
@@ -185,7 +196,7 @@ tuple_t color_at(world_t* world, ray_t* ray, int remaining) {
 
     intersection = intersections.tree[0];
     List intersectionList;
-    list_init(&intersectionList, NULL);
+    list_init(&intersectionList, free);
     heap_to_list(&intersections, &intersectionList);
     computation_t computation = prepare_computation(intersection, ray, &intersectionList);
     intersection->object->material.color = pattern_at_object(intersection->object, computation.position);
@@ -216,29 +227,28 @@ tuple_t pattern_at_object(object_t* object, tuple_t position) {
 }
 
 tuple_t normal_at(object_t* object, tuple_t position) {
-    matrix_t m;
     tuple_t object_normal;
 
+    tuple_t local_point = world_to_object(object, position);
+
     switch(object->type_name) {
-        case EMPTY_OBJECT:
-            object_normal = vector(0, 0, 0);
-            break;
         case SPHERE:
-            object_normal = sphere_normal_at(object, position);
+            object_normal = sphere_normal_at(object, local_point);
             break;
         case PLANE:
-            object_normal = plane_normal_at(object, position);
+            object_normal = plane_normal_at(object, local_point);
             break;
         case CUBE:
-            object_normal = cube_normal_at(object, position);
+            object_normal = cube_normal_at(object, local_point);
             break;
         case CYLINDER:
-            object_normal = cylinder_normal_at(object, position);
+            object_normal = cylinder_normal_at(object, local_point);
+            break;
+        default:
+            object_normal = vector(0, 0, 0);
     }
 
-    tuple_t world_normal = tuple_transform(*matrix_T(*matrix_inv(object->origin_transform, &m), &m), object_normal);
-    world_normal.w = 0;
-    return tuple_norm(world_normal);
+    return normal_to_world(object, object_normal);
 }
 
 tuple_t reflected_color(world_t* world, computation_t* computation, int remaining) {
@@ -287,4 +297,24 @@ double schlick(computation_t* computation) {
     r0 *= r0;
 
     return r0 + (1 - r0) * pow(1 - cos, 5);
+}
+
+tuple_t world_to_object(object_t* object, tuple_t point) {
+    if(object->parent)
+        point = world_to_object(object->parent, point);
+
+    matrix_t temp;
+    return tuple_transform(*matrix_inv(object->origin_transform, &temp), point);
+}
+
+tuple_t normal_to_world(object_t* object, tuple_t normal) {
+    matrix_t temp;
+    normal = tuple_transform(*matrix_T(*matrix_inv(object->origin_transform, &temp), &temp), normal);
+    normal.w = 0;
+    normal = tuple_norm(normal);
+
+    if(object->parent)
+        normal = normal_to_world(object->parent, normal);
+
+    return normal;
 }
