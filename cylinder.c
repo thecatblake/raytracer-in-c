@@ -34,7 +34,7 @@ void cylinder_cap_hit(object_t* cylinder, ray_t* ray, double* buf, int* hit_num)
     }
 }
 
-void cylinder_hit(object_t* cylinder, ray_t* ray, double* buf, int* hit_num) {
+void cylinder_hit(object_t* cylinder, ray_t* ray, intersection_t* buf, int* hit_num) {
     *hit_num = 0;
     cylinder_data_t *data = cylinder->data;
 
@@ -43,7 +43,7 @@ void cylinder_hit(object_t* cylinder, ray_t* ray, double* buf, int* hit_num) {
     cylinder_cap_hit(cylinder, ray, cap_hits, &cap_hit_num);
 
     for (int i = 0; i < cap_hit_num; i++) {
-        buf[i] = cap_hits[i];
+        buf[i] = (intersection_t){cap_hits[i], cylinder};
     }
 
     *hit_num = cap_hit_num;
@@ -69,13 +69,13 @@ void cylinder_hit(object_t* cylinder, ray_t* ray, double* buf, int* hit_num) {
 
     double y0 = ray->origin.y + t0 * ray->direction.y;
     if (data->minimum < y0 && y0 < data->maximum) {
-        buf[*hit_num] = t0;
+        buf[*hit_num] = (intersection_t){t0, cylinder};
         *hit_num += 1;
     }
 
     double y1 = ray->origin.y + t1 * ray->direction.y;
     if (data->minimum < y1 && y1 < data->maximum) {
-        buf[*hit_num] = t1;
+        buf[*hit_num] = (intersection_t){t1, cylinder};
         *hit_num += 1;
     }
 }

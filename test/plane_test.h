@@ -26,9 +26,9 @@ TEST(test_intersect_ray_parallel) {
     object_t plane;
     plane_init(&plane);
     ray_t ray = {point(0, 10, 0), vector(0, 0, 1)};
-    double buf[1];
+    intersection_t buf[1];;
     int hit_num;
-    plane_hit(&ray, buf, &hit_num);
+    plane_hit(&plane, &ray, buf, &hit_num);
 
     munit_assert(hit_num == 0);
 
@@ -39,12 +39,12 @@ TEST(test_ray_intersecting_plane_above) {
     object_t plane;
     plane_init(&plane);
     ray_t ray = {point(0, 1, 0), vector(0, -1, 0)};
-    double buf[1];
+    intersection_t buf[1];;
     int hit_num;
-    plane_hit(&ray, buf, &hit_num);
+    plane_hit(&plane, &ray, buf, &hit_num);
 
     munit_assert(hit_num == 1);
-    munit_assert(buf[0] == 1);
+    munit_assert(buf[0].t == 1);
 
     return MUNIT_OK;
 }

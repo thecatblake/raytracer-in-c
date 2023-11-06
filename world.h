@@ -11,6 +11,7 @@
 #include "tuple.h"
 #include "ray.h"
 #include "object.h"
+#include "intersection.h"
 #include "sphere.h"
 #include "light.h"
 #include "plane.h"
@@ -21,11 +22,6 @@ typedef struct world_s {
     List objects;
     point_light_t* light;
 } world_t;
-
-typedef struct intersection_s {
-    double t;
-    object_t* object;
-} intersection_t;
 
 typedef struct computation_s {
     double t;

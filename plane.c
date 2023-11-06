@@ -14,7 +14,7 @@ tuple_t plane_normal_at(object_t* plane, tuple_t point) {
     return tuple_transform(*matrix_inv(plane->origin_transform, &m), point(0, 1, 0));
 }
 
-void plane_hit(ray_t* ray, double* buf, int* hit_num) {
+void plane_hit(object_t* plane, ray_t* ray, intersection_t* buf, int* hit_num) {
     if (fabs(ray->direction.y) < EPSILON_DEFAULT) {
         *hit_num = 0;
         return;
@@ -22,5 +22,5 @@ void plane_hit(ray_t* ray, double* buf, int* hit_num) {
 
     double t = -ray->origin.y / ray->direction.y;
     *hit_num = 1;
-    buf[0] = t;
+    buf[0] = (intersection_t){t, plane};
 }

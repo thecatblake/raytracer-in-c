@@ -31,7 +31,7 @@ TEST(test_ray_misses_cylinder) {
     for (int i=0; i < 3; i++) {
         ray_t ray = {origins[i], directions[i]};
 
-        double hits[2];
+        intersection_t hits[2];
         int hit_num;
         cylinder_hit(&cyl, &ray, hits, &hit_num);
 
@@ -71,13 +71,13 @@ TEST(test_ray_strikes_cylinder) {
     for (int i=0; i < 3; i++) {
         ray_t ray = {origins[i], directions[i]};
 
-        double hits[2];
+        intersection_t hits[2];
         int hit_num;
         cylinder_hit(&cyl, &ray, hits, &hit_num);
 
         munit_assert(hit_num == 2);
-        munit_assert(double_cmp2(hits[0], ts[i][0]));
-        munit_assert(double_cmp2(hits[1], ts[i][1]));
+        munit_assert(double_cmp2(hits[0].t, ts[i][0]));
+        munit_assert(double_cmp2(hits[1].t, ts[i][1]));
     }
 
     return MUNIT_OK;
@@ -153,7 +153,7 @@ TEST(test_intersect_constrained_cylinder) {
 
     for(int i=0; i < 6; i++) {
         ray_t ray = {origins[i],directions[i]};
-        double hits[2];
+        intersection_t hits[2];
         int hit_num;
         cylinder_hit(&cylinder, &ray, hits, &hit_num);
 
@@ -190,7 +190,7 @@ TEST(test_intersect_caps_of_closed_cylinder) {
 
     for(int i=0; i < 5; i++) {
         ray_t ray = {origins[i],directions[i]};
-        double hits[2];
+        intersection_t hits[2];
         int hit_num;
         cylinder_hit(&cylinder, &ray, hits, &hit_num);
 

@@ -12,13 +12,13 @@ TEST(test_sphere_hit) {
     object_t sphere;
     sphere_init(&sphere);
 
-    double buf[2];
+    intersection_t buf[2];;
     int hit_num;
-    sphere_hit(&ray, buf, &hit_num);
+    sphere_hit(&sphere, &ray, buf, &hit_num);
 
     munit_assert(hit_num == 2);
-    munit_assert(tuple_cmp2(ray_position(&ray, buf[0]), point(cos(M_PI/4 * 5), sin(M_PI/4 * 5), 0)));
-    munit_assert(tuple_cmp2(ray_position(&ray, buf[1]), point(cos(M_PI/4), sin(M_PI/4), 0)));
+    munit_assert(tuple_cmp2(ray_position(&ray, buf[0].t), point(cos(M_PI/4 * 5), sin(M_PI/4 * 5), 0)));
+    munit_assert(tuple_cmp2(ray_position(&ray, buf[1].t), point(cos(M_PI/4), sin(M_PI/4), 0)));
 
     return MUNIT_OK;
 }

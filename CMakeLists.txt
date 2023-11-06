@@ -27,6 +27,7 @@ add_library(raytracer
         cube.h
         cylinder.c
         cylinder.h
+        intersection.h
 )
 
 add_executable(ray_tracer_in_C main.c)

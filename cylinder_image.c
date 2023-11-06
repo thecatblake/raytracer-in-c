@@ -70,7 +70,6 @@ int main() {
     world_add_object(&world, &floor);
     world_add_object(&world, &cylinder);
     world_add_object(&world, &left);
-    world_add_object(&world, &right);
 
     int width = 2000;
     int height = 2000;

@@ -8,8 +8,9 @@
 #include "tuple.h"
 #include "ray.h"
 #include "object.h"
+#include "intersection.h"
 
-void cube_hit(ray_t* ray, double* buf, int* hit_num);
+void cube_hit(object_t* cube, ray_t* ray, intersection_t* buf, int* hit_num);
 void cube_init(object_t* object);
 tuple_t cube_normal_at(object_t* cube, tuple_t point);
 

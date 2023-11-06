@@ -8,6 +8,7 @@
 #include "tuple.h"
 #include "ray.h"
 #include "object.h"
+#include "intersection.h"
 
 typedef struct cylinder_data_s {
     double minimum;
@@ -15,7 +16,7 @@ typedef struct cylinder_data_s {
     int closed;
 } cylinder_data_t;
 
-void cylinder_hit(object_t* cylinder, ray_t* ray, double* buf, int* hit_num);
+void cylinder_hit(object_t* cylinder, ray_t* ray, intersection_t* buf, int* hit_num);
 void cylinder_cap_hit(object_t* cylinder, ray_t* ray, double* buf, int* hit_num);
 void cylinder_init(object_t* object, cylinder_data_t* data);
 tuple_t cylinder_normal_at(object_t* cylinder, tuple_t point);

@@ -12,7 +12,7 @@ double max(double x, double y) {
     return x > y ? x : y;
 }
 
-void cube_hit(ray_t* ray, double* buf, int* hit_num) {
+void cube_hit(object_t* cube, ray_t* ray, intersection_t* buf, int* hit_num) {
     double dirfracx = 1.0f / ray->direction.x;
     double dirfracy = 1.0f / ray->direction.y;
     double dirfracz = 1.0f / ray->direction.z;
@@ -34,8 +34,8 @@ void cube_hit(ray_t* ray, double* buf, int* hit_num) {
     }
 
     *hit_num = 2;
-    buf[0] = tmin;
-    buf[1] = tmax;
+    buf[0] = (intersection_t){tmin, cube};
+    buf[1] = (intersection_t){tmax, cube};
 }
 
 void cube_init(object_t* object) {

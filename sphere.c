@@ -4,7 +4,7 @@
 
 #include "sphere.h"
 
-void sphere_hit(ray_t* ray, double* buf, int* hit_num) {
+void sphere_hit(object_t* sphere, ray_t* ray, intersection_t* buf, int* hit_num) {
     double a = tuple_dot(ray->direction, ray->direction);
     double b = tuple_dot(ray->origin, ray->direction);
     double c = tuple_dot(ray->origin, ray->origin) - 1;
@@ -14,7 +14,7 @@ void sphere_hit(ray_t* ray, double* buf, int* hit_num) {
             *hit_num = 0;
             return;
         }
-        buf[0] = -c/b;
+        buf[0] = (intersection_t){-c / b, sphere};
         *hit_num = 1;
         return;
     }
@@ -27,14 +27,14 @@ void sphere_hit(ray_t* ray, double* buf, int* hit_num) {
 
     if(discriminant == 0) {
         *hit_num = 1;
-        buf[0] = (-b + sqrt(discriminant)) / a;
+        buf[0] = (intersection_t){(-b + sqrt(discriminant)) / a, sphere};
         return;
     }
 
     *hit_num = 2;
     double tmp = sqrt(discriminant);
-    buf[0] = (-b - tmp) / a;
-    buf[1] = (-b + tmp) / a;
+    buf[0] = (intersection_t){(-b - tmp) / a, sphere};
+    buf[1] = (intersection_t){(-b + tmp) / a, sphere};
 }
 
 void sphere_init(object_t* object) {

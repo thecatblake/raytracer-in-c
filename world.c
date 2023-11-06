@@ -24,7 +24,7 @@ Heap world_intersect(world_t* world, ray_t* ray) {
 
     while(object_elm) {
         object = list_data(object_elm);
-        double hits[2];
+        intersection_t* hits = malloc(sizeof(intersection_t) * 2);
         int hit_num;
 
         ray_t ray_inv;
@@ -41,17 +41,17 @@ Heap world_intersect(world_t* world, ray_t* ray) {
                 break;
             case SPHERE:
             {
-                sphere_hit(&ray_inv, hits, &hit_num);
+                sphere_hit(object, &ray_inv, hits, &hit_num);
                 break;
             }
             case PLANE:
             {
-                plane_hit(&ray_inv, hits, &hit_num);
+                plane_hit(object, &ray_inv, hits, &hit_num);
                 break;
             }
             case CUBE:
             {
-                cube_hit(&ray_inv, hits, &hit_num);
+                cube_hit(object, &ray_inv, hits, &hit_num);
                 break;
             }
             case CYLINDER:
@@ -62,15 +62,10 @@ Heap world_intersect(world_t* world, ray_t* ray) {
         }
 
         for(int i=0; i < hit_num; i++) {
-            if(hits[i] < 0)
+            if(hits[i].t < 0)
                 continue;
 
-            intersection_t* intersection = malloc(sizeof(intersection_t));
-
-            intersection->t = hits[i];
-            intersection->object = object;
-
-            heap_insert(&intersections, intersection);
+            heap_insert(&intersections, &hits[i]);
         }
 
         object_elm = object_elm->next;

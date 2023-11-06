@@ -139,6 +139,8 @@ TEST(test_matrix_translation) {
     tuple_t p = point(1, 0, 0);
 
     munit_assert(tuple_cmp2(tuple_transform(*translation_matrix(1, 1, 1, &t), p), point(2, 1, 1)));
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_scaling) {
@@ -146,6 +148,7 @@ TEST(test_matrix_scaling) {
     tuple_t p = point(1, 0, 0);
 
     munit_assert(tuple_cmp2(tuple_transform(*scaling_matrix(2, 2, 2, &t), p), point(2, 0, 0)));
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_rotation_x) {
@@ -153,6 +156,7 @@ TEST(test_matrix_rotation_x) {
     tuple_t p = point(1, 1, 1);
 
     munit_assert(tuple_cmp2(tuple_transform(*rotation_x_matrix(M_PI/2, &t), p), point(1, -1, 1)));
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_rotation_y) {
@@ -160,6 +164,7 @@ TEST(test_matrix_rotation_y) {
     tuple_t p = point(1, 1, 1);
 
     munit_assert(tuple_cmp2(tuple_transform(*rotation_y_matrix(M_PI/2, &t), p), point(1, 1, -1)));
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_rotation_z) {
@@ -167,6 +172,7 @@ TEST(test_matrix_rotation_z) {
     tuple_t p = point(1, 1, 1);
 
     munit_assert(tuple_cmp2(tuple_transform(*rotation_z_matrix(M_PI/2, &t), p), point(-1, 1, 1)));
+    return MUNIT_OK;
 }
 
 #define MATRIX_TESTS \

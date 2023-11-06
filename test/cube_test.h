@@ -43,13 +43,13 @@ TEST(test_ray_intersect_cube) {
 
     for (int i=0; i < 7; i++) {
         ray_t ray = {origins[i], directions[i]};
-        double hits[2];
+        intersection_t hits[2];
         int hit_num;
-        cube_hit(&ray, hits, &hit_num);
+        cube_hit(&cube, &ray, hits, &hit_num);
 
         munit_assert(hit_num == 2);
-        munit_assert(double_cmp2(hits[0], ts[i][0]));
-        munit_assert(double_cmp2(hits[1], ts[i][1]));
+        munit_assert(double_cmp2(hits[0].t, ts[i][0]));
+        munit_assert(double_cmp2(hits[1].t, ts[i][1]));
     }
 
     return MUNIT_OK;
@@ -79,9 +79,9 @@ TEST(test_ray_misses_cube) {
 
     for (int i=0; i < 6; i++) {
         ray_t ray = {origins[i], directions[i]};
-        double hits[2];
+        intersection_t hits[2];
         int hit_num;
-        cube_hit(&ray, hits, &hit_num);
+        cube_hit(&cube, &ray, hits, &hit_num);
 
         munit_assert(hit_num == 0);
     }
